@@ -21,11 +21,11 @@ router.get(
 router.get(
   '/redirect/google',
   passport.authenticate('google', {
-    failureRedirect: `${process.env.HOST}`,
+    failureRedirect: `${process.env.HOST}/`,
   }),
   (_req, res) => {
     // Successful authentication, redirect to client-side application
-    res.redirect(`${process.env.HOST}home`);
+    res.redirect(`${process.env.HOST}/home`);
   }
 );
 
@@ -46,7 +46,7 @@ router.get('/logout', function (req, res, next) {
       return next(err);
     }
   });
-  res.redirect(`${process.env.HOST}`);
+  res.redirect(`${process.env.HOST}/`);
 });
 
 export default router;
