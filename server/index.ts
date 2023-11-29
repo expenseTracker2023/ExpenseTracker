@@ -28,6 +28,7 @@ app.use(
 dotenv.config({ path: path.resolve(__dirname, './.env') });
 
 app.set('trust proxy', 1);
+app.enable('trust proxy');
 
 // setting up express session
 app.use(
