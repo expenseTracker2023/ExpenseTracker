@@ -8,6 +8,7 @@ import session from 'express-session';
 
 //exported functions
 import { connectDB } from './config/database.ts';
+import User from './models/Users';
 
 //route imports
 import entryRoutes from './routes/entries.ts';
@@ -50,6 +51,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use('google', googleStrategy);
+
+passport.serializeUser((user: any, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  const user = await User.findById(id);
+  done(null, user);
+});
 
 const port = process.env.PORT || 3000;
 
