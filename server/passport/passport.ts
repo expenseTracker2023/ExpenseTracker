@@ -8,14 +8,14 @@ dotenv.config();
 
 const GoogleStrategy = passportGoogle.Strategy;
 
-passport.serializeUser((user: any, done) => {
-  done(null, user.id);
-});
+// passport.serializeUser((user: any, done) => {
+//   done(null, user.id);
+// });
 
-passport.deserializeUser(async (id, done) => {
-  const user = await User.findById(id);
-  done(null, user);
-});
+// passport.deserializeUser(async (id, done) => {
+//   const user = await User.findById(id);
+//   done(null, user);
+// });
 
 const googleStrategy = new GoogleStrategy(
   {
