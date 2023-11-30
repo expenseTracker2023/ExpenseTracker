@@ -19,13 +19,8 @@ import './passport/passport.ts';
 
 const app = express();
 app.use(express.json());
-app.use(
-  cors({
-    origin: true,
-    credentials: true,
-    methods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT'],
-  })
-);
+app.use(cors({ origin: "https://expense-tracker-phi-gold.vercel.app/", credentials: true }))
+
 dotenv.config({ path: path.resolve(__dirname, './.env') });
 
 app.set('trust proxy', 1);
