@@ -14,7 +14,9 @@ import entryRoutes from './routes/entries.ts';
 import chartDataRoutes from './routes/chartData.ts';
 import authRouter from './routes/auth.ts';
 
-import './passport/passport.ts';
+// import './passport/passport.ts';
+
+import { googleStrategy } from './passport/passport.ts';
 
 const app = express();
 app.use(express.json());
@@ -27,7 +29,7 @@ app.use(
 );
 dotenv.config({ path: path.resolve(__dirname, './.env') });
 
-// app.set('trust proxy', 1);
+app.set('trust proxy', 1);
 app.enable('trust proxy');
 
 // setting up express session
@@ -46,6 +48,8 @@ app.use(
 // initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
+
+passport.use('google', googleStrategy);
 
 const port = process.env.PORT || 3000;
 
