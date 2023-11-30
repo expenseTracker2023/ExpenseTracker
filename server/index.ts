@@ -3,21 +3,18 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import passport from 'passport';
-// import cookieSession from 'cookie-session';
-import session from 'express-session';
+import expressSession from 'express-session';
+import { Request, Response } from 'express';
 
 //exported functions
 import { connectDB } from './config/database.ts';
-import User from './models/Users';
 
 //route imports
 import entryRoutes from './routes/entries.ts';
 import chartDataRoutes from './routes/chartData.ts';
 import authRouter from './routes/auth.ts';
 
-// import './passport/passport.ts';
-
-import { googleStrategy } from './passport/passport.ts';
+import './passport/passport.ts';
 
 const app = express();
 app.use(express.json());
@@ -30,36 +27,24 @@ app.use(
 );
 dotenv.config({ path: path.resolve(__dirname, './.env') });
 
-app.set('trust proxy', 1);
-app.enable('trust proxy');
+// app.set('trust proxy', 1);
 
 // setting up express session
 app.use(
-  session({
+  expressSession({
     secret: process.env.COOKIE_KEY as string,
-    resave: true,
+    resave: false,
     saveUninitialized: true,
-    cookie: {
-      sameSite: 'none',
-      secure: true,
-      maxAge: 1000 * 60 * 60 * 24 * 7, // One Week
-    },
+    // cookie: {
+    //   sameSite: 'none',
+    //   secure: true,
+    //   maxAge: 1000 * 60 * 60 * 24 * 7, // One Week
+    // },
   })
 );
 // initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
-
-passport.use('google', googleStrategy);
-
-passport.serializeUser((user: any, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser(async (id, done) => {
-  const user = await User.findById(id);
-  done(null, user);
-});
 
 const port = process.env.PORT || 3000;
 
